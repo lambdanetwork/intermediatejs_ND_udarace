@@ -99,9 +99,8 @@ async function handleCreateRace() {
 	
 	// const race = invoke the API call to create the race, then save the result
 	const race = await createRace(player_id, track_id);
-	console.log(race)
 	// update the store with the race id
-	store.race_id = race.ID;
+	store.race_id = race.ID-1;
 
 	// The race has been created, now start the countdown
 	// call the async function runCountdown
@@ -116,28 +115,27 @@ async function handleCreateRace() {
 
 async function runRace(raceID) {
 	let intervalId;
-	const races = await getRacers();
-	return new Promise(resolve => {
-		// use Javascript's built in setInterval method to get race info every 500ms
-		intervalId = setInterval(async () =>{
-			const updateRace = await getRace(raceID);
-			console.log(updateRace);
-		}, 500 )
-	/* 
-		TODO - if the race info status property is "in-progress", update the leaderboard by calling:
+	try {
+		return new Promise(resolve => {
+			// use Javascript's built in setInterval method to get race info every 500ms
+			intervalId = setInterval(async () =>{
+				const updatedRace = await getRace(raceID);
+				// if the race info status property is "in-progress", update the leaderboard by calling:
+				if(updatedRace.status === 'in-progress'){
+					renderAt('#leaderBoard', raceProgress(updatedRace.positions, store.player_id))
+				}
 
-		renderAt('#leaderBoard', raceProgress(res.positions))
-	*/
-
-	/* 
-		TODO - if the race info status property is "finished", run the following:
-
-		clearInterval(raceInterval) // to stop the interval from repeating
-		renderAt('#race', resultsView(res.positions)) // to render the results view
-		reslove(res) // resolve the promise
-	*/
-	})
-	// remember to add error handling for the Promise
+				// if the race info status property is "finished", run the following:
+				if(updatedRace.status === "finished"){
+					clearInterval(intervalId) // to stop the interval from repeating
+					renderAt('#race', resultsView(updatedRace.positions, store.player_id)) // to render the results view
+					resolve(updatedRace) // resolve the promise
+				}
+			}, 500 )
+		})
+	} catch(err){
+		console.error(err);
+	}
 }
 
 async function runCountdown() {
@@ -201,5 +199,5 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
 	console.log("accelerate button clicked")
 	// Invoke the API call to accelerate
-	accelerate(store.player_id);
+	accelerate(store.race_id);
 }
