@@ -113,7 +113,7 @@ export function raceProgress(positions, player_id) {
 				</td>
 			</tr>
 		`
-	})
+	}).join("");
 
 	return `
 		<main>
