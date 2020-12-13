@@ -84,7 +84,7 @@ export function renderRaceStartView(track, racers) {
 	`
 }
 
-export function resultsView(positions) {
+export function resultsView(positions, player_id) {
 	positions.sort((a, b) => (a.final_position > b.final_position) ? 1 : -1)
 
 	return `
@@ -92,14 +92,14 @@ export function resultsView(positions) {
 			<h1>Race Results</h1>
 		</header>
 		<main>
-			${raceProgress(positions)}
+			${raceProgress(positions, player_id)}
 			<a href="/race">Start a new race</a>
 		</main>
 	`
 }
 
-export function raceProgress(positions) {
-	let userPlayer = positions.find(e => e.id === store.player_id)
+export function raceProgress(positions, player_id) {
+	let userPlayer = positions.find(e => e.id.toString() === player_id.toString());
 	userPlayer.driver_name += " (you)"
 
 	positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
