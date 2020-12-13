@@ -50,7 +50,7 @@ async function onPageLoad() {
 function setupClickHandlers() {
 	document.addEventListener('click', function(event) {
 		const { target } = event
-
+		
 		// Race track form field
 		if (target.matches('.card.track')) {
 			handleSelectTrack(target)
@@ -117,10 +117,6 @@ async function handleCreateRace() {
 async function runRace(raceID) {
 	let intervalId;
 	const races = await getRacers();
-	const race = await getRace(raceID);
-	console.log(races);
-	console.log(race);
-
 	return new Promise(resolve => {
 		// use Javascript's built in setInterval method to get race info every 500ms
 		intervalId = setInterval(async () =>{
@@ -197,7 +193,7 @@ function handleSelectTrack(target) {
 
 	// add class selected to current target
 	target.classList.add('selected')
-
+	console.log(target.id)
 	// save the selected track id to the store
 	store.track_id = target.id
 }

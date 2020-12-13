@@ -23,10 +23,10 @@ export function renderRacerCard(racer) {
 
 	return `
 		<li class="card podracer" id="${id}">
-			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+			<h3 style="pointer-events:none;">${driver_name}</h3>
+			<p  style="pointer-events:none;">${top_speed}</p>
+			<p  style="pointer-events:none;">${acceleration}</p>
+			<p style="pointer-events:none;">${handling}</p>
 		</li>
 	`
 }
@@ -52,7 +52,7 @@ export function renderTrackCard(track) {
 
 	return `
 		<li id="${id}" class="card track">
-			<h3>${name}</h3>
+			<h3  style="pointer-events:none;">${name}</h3>
 		</li>
 	`
 }
